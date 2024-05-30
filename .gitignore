@@ -1,0 +1,5 @@
+venv/
+*.pyc
+__pycahce__/
+db.sql3
+.env
