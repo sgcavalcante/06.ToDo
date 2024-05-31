@@ -21,4 +21,5 @@ from apps.to_do import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('apps.to_do.urls')),
+    
 ]

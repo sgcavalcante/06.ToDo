@@ -8,9 +8,14 @@
         <button class="btn btn-primary">Adicionar ToDo</button>
         <button class="btn btn-success">Atualizar ToDo</button>
     </div>
-    <div class="form-control wrapper" style="background-color: black">
+    <div class="form-control wrapper" style="background-color: rgb(0, 255, 200)">
          
-        <a href="{% url 'monitortemp' %}" class="btn btn-primary " style="text-align: center;width:100%">Monitor de Temperatura</a>
+        <a class="btn btn-primary" href="{% url 'home' %}" >Home</a>
+        <hr>
+        <hr>
+        <h1>Gráfico de Linha</h1>
+        <img src="{% url 'line_chart' %}" alt="Gráfico de Linha">    
+
     </div>
 {% endblock conteudo %}
 
