@@ -1,37 +1,73 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <title>SiGeD - Sistema Gestão Dental</title>
+    <title>{% block title %}Título do Site{% endblock title %}</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 82vh;
+        }
+        .content {
+            flex: 1;
+        }
+        .footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .button-container button {
+            margin-left: 5px; /* Espaçamento entre os botões */
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }    
+    </style>
+    <title>.ToDo</title>
 </head>
-<body class="container" style="width: 100%;"></body>
-<header>
-    <!--    
-        <div class="bg-info-subtle text-black" style="text-align: center; height: 1.5cm; "  >
-            Rachel Cardoso - Reabilitação Oral e Estética 
+<body>
+    <div >
+        <header>
+            {% block header %}
+            <!-- Inclua aqui o conteúdo do cabeçalho, se necessário -->
+            {% endblock header %}
+        <div class="bg-secondary" style="height: 35px; ">
+            <div class="button-container">
+                <button class="btn btn-dark btn-center" style=" width: 120px;height: 25px;  ">Login</button>
+                <button class="btn btn-dark btn-center" style="width: 120px;height: 25px; " >Logout</button>
+            </div> 
         </div>
-    -->
-    
-    <div class="bg-dark" style="height: 50px">
-        <div style="padding-bottom: 10px; padding-top: 10px;  ">
-            
-             
-        </div>
-        
-
     </div>
 </header>
 <hr>
-{% block conteudo %}
-
-{% endblock conteudo %}
-
-{% include 'footer.html' %}
-</body>
+<div class="content wrapper ">
+    
+    {% block conteudo %}
+    
+    {% endblock conteudo %}
+</div>
+<footer class="footer">
+    {% include 'footer.html' %}
+</footer>
+</div>
 <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+<!-- {% include 'footer.html' %} -->

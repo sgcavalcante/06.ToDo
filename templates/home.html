@@ -1,11 +1,17 @@
 {% extends "base.html" %}
+{% block title %}Home{% endblock title %}
 
 {% load static %}
 {% block conteudo %}
-    <h1>ToDo</h1>
-
-
-
-    {% endblock conteudo %}
+    <h1>.ToDo</h1>
+    <div class="form-control" >
+        <button class="btn btn-primary">Adicionar ToDo</button>
+        <button class="btn btn-success">Atualizar ToDo</button>
+    </div>
+    <div class="form-control wrapper" style="background-color: black">
     
-    {% include 'footer.html' %}    
+    
+    </div>
+{% endblock conteudo %}
+
+<!--{% include 'footer.html' %}-->
