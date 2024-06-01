@@ -3,18 +3,40 @@
 
 {% load static %}
 {% block conteudo %}
+    <style>
+       .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;  /* Ajusta a altura da tela inteira */
+            width: 100vw;  /* Ajusta a largura da tela inteira */
+        }
+
+        .dash-container {
+            width: 80vw;  /* Ajuste a largura aqui */
+            height: 80vh; /* Ajuste a altura aqui */
+        }
+    </style>
     <h1>.ToDo</h1>
     <div class="form-control" >
         <button class="btn btn-primary">Adicionar ToDo</button>
         <button class="btn btn-success">Atualizar ToDo</button>
     </div>
-    <div class="form-control wrapper" style="background-color: rgb(0, 255, 200)">
+    <div class="form-control wrapper" style="background-color: rgb(2, 2, 2)">
          
         <a class="btn btn-primary" href="{% url 'home' %}" >Home</a>
         <hr>
         <hr>
         <h1>Gráfico de Linha</h1>
-        <img src="{% url 'line_chart' %}" alt="Gráfico de Linha">    
+         
+        
+        {% load plotly_dash %}
+
+        <div class="container">
+            <div class="dash-container">
+                {% plotly_app name="SimpleExample" %}
+            </div>
+        </div>
 
     </div>
 {% endblock conteudo %}

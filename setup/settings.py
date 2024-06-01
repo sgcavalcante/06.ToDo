@@ -46,8 +46,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'dpd_static_support',
+    'channels',
     'apps.to_do',
 ]
+
+ASGI_APPLICATION = 'myproject.asgi.application'  # Substitua 'myproject' pelo nome do seu projeto
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +69,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',  # Middleware necessário
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',  # Middleware necessário
 ]
+
 
 ROOT_URLCONF = 'setup.urls'
 
@@ -85,9 +100,8 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-        'default':dj_database_url.config(default=os.getenv('DATABASE_URL'))
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3', 
     }
 }
 
@@ -138,3 +152,12 @@ STATICFILES_DIR = (
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Configurações do Django Plotly Dash
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+PLOTLY_DASH = {
+    'ws_route': 'dpd/ws/channel',  # WebSocket route
+    'http_route': 'dpd/views',  # HTTP route
+    'insert_demo_migrations': True,
+}
