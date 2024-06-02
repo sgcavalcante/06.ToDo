@@ -23,13 +23,13 @@ def sensor_data(request):
 @api_view(['POST'])
 def receive_data(request):
     try:
-        sensor_id = request.data.get('sensor_id')
-        temperature = request.data.get('temperature')
-        if sensor_id is not None and temperature is not None:
-            reading = TemperaturaSensores(sensor_id=sensor_id, temperature=temperature)
+        id = request.data.get('id')
+        temperatura = request.data.get('temperatura')
+        if id is not None and temperatura is not None:
+            reading = TemperaturaSensores(id=id, temperatura=temperatura)
             reading.save()
             return JsonResponse({'status': 'success'})
         else:
-            return JsonResponse({'status': 'failure', 'message': 'Missing sensor_id or temperature'}, status=400)
+            return JsonResponse({'status': 'failure', 'message': 'Missing id or temperatura'}, status=400)
     except Exception as e:
         return JsonResponse({'status': 'failure', 'message': str(e)}, status=500)
