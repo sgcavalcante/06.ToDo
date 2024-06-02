@@ -9,14 +9,14 @@
     <h1>Sensor Data</h1>
     <table border="1">
         <tr>
-            <th>Sensor ID</th>
-            <th>Temperature (°C)</th>
+            <th>Id</th>
+            <th>Temperatura (°C)</th>
             <th>Timestamp</th>
         </tr>
         {% for reading in readings %}
         <tr>
-            <td>{{ reading.sensor_id }}</td>
-            <td>{{ reading.temperature }}</td>
+            <td>{{ reading.id }}</td>
+            <td>{{ reading.temperatura }}</td>
             <td>{{ reading.timestamp }}</td>
         </tr>
         {% endfor %}
