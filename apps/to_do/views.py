@@ -15,9 +15,6 @@ def monitortemp(request):
     return render(request,'MonitorTemp.html')
 
 
-def sensor_data(request):
-    readings=TemperaturaSensores.objects.all().order_by('-timestamp')
-    return render(request,'sensor_data.html',{'readings':readings})
 
 
 @api_view(['POST'])
@@ -33,3 +30,29 @@ def receive_data(request):
             return JsonResponse({'status': 'failure', 'message': 'Missing id or temperatura'}, status=400)
     except Exception as e:
         return JsonResponse({'status': 'failure', 'message': str(e)}, status=500)
+    
+#def sensor_data(request):
+#    readings=TemperaturaSensores.objects.all().order_by('-timestamp')
+#    return render(request,'sensor_data.html',{'readings':readings})
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+import plotly.express as px
+#from django.shortcuts import render
+#from .models import TemperaturaSensores
+
+def sensor_data(request):
+    readings = TemperaturaSensores.objects.all().order_by('-timestamp')
+    
+    # Extrair os dados para o gráfico
+    sensor_ids = [reading.sensor_id for reading in readings]
+    temperaturas = [reading.temperatura for reading in readings]
+    timestamps = [reading.timestamp for reading in readings]
+
+    # Criar o gráfico com Plotly
+    fig = px.line(x=timestamps, y=temperaturas, title='Temperaturas dos Sensores', labels={'x': 'Timestamp', 'y': 'Temperature (°C)'})
+    fig.update_traces(mode='markers+lines')
+    fig.update_layout(autosize=True, margin=dict(l=0, r=0, b=0, t=30))
+
+    # Converter o gráfico para JSON
+    graph_json = fig.to_json()
+
+    return render(request, 'sensor_data.html', {'graph_json': graph_json, 'readings': readings})

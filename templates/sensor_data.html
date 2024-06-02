@@ -4,18 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sensor Data</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
+        // Recarrega a página a cada 30 segundos (30000 milissegundos)
         setTimeout(function(){
             window.location.reload(1);
-        }, 90000);
+        }, 30000);
+
+        // Função para obter e exibir a hora atual
+        function displayTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            var timeString = hours + ':' + minutes + ':' + seconds;
+            document.getElementById('current-time').innerText = timeString;
+        }
+
+        // Chama a função displayTime quando a página carrega
+        window.onload = function() {
+            displayTime();
+
+            // Renderizar o gráfico Plotly
+            var graph_json = {{ graph_json|safe }};
+            Plotly.react('graph', graph_json.data, graph_json.layout);
+        }
     </script>
 </head>
 <body>
     <h1>Sensor Data</h1>
+    <p>Hora Atual: <span id="current-time"></span></p>
+    <div id="graph"></div>
     <table border="1">
         <tr>
-            <th>Sensor Id</th>
-            <th>Temperatura (°C)</th>
+            <th>Sensor ID</th>
+            <th>Temperature (°C)</th>
             <th>Timestamp</th>
         </tr>
         {% for reading in readings %}
