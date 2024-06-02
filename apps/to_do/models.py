@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class TemperaturaSensores(models.Model):
-    sensor_id = models.IntegerField(null=True)
+    sensor_id = models.IntegerField(blank=True,null=True)
     temperatura = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
