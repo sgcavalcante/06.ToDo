@@ -36,6 +36,20 @@
 <body>
     <h1>Sensor Data</h1>
     <p>Hora Atual: <span id="current-time"></span></p>
+
+    <!-- Formulário de filtros -->
+    <form method="GET">
+        <label for="sensor_id">Sensor ID:</label>
+        <input type="text" id="sensor_id" name="sensor_id">
+        <!--
+            <label for="start_date">Data de Início:</label>
+            <input type="datetime-local" id="start_date" name="start_date">
+            <label for="end_date">Data de Fim:</label>
+            <input type="datetime-local" id="end_date" name="end_date">
+        -->
+            <button type="submit">Filtrar</button>
+    </form>
+
     <div id="graph"></div>
     <table border="1">
         <tr>

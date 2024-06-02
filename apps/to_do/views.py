@@ -39,9 +39,26 @@ import plotly.express as px
 #from django.shortcuts import render
 #from .models import TemperaturaSensores
 
+import plotly.express as px
+#from django.shortcuts import render
+#from .models import TemperaturaSensores
+from django.utils.dateparse import parse_datetime
+
 def sensor_data(request):
+    # Parâmetros de filtro
+    sensor_id = request.GET.get('sensor_id')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Filtrar os dados
     readings = TemperaturaSensores.objects.all().order_by('-timestamp')
-    
+    if sensor_id:
+        readings = readings.filter(sensor_id=sensor_id)
+    #if start_date:
+        #readings = readings.filter(timestamp__gte=parse_datetime(start_date))
+    #if end_date:
+        #readings = readings.filter(timestamp__lte=parse_datetime(end_date))
+
     # Extrair os dados para o gráfico
     sensor_ids = [reading.sensor_id for reading in readings]
     temperaturas = [reading.temperatura for reading in readings]
