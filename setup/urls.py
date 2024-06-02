@@ -20,6 +20,6 @@ from apps.to_do import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('apps.to_do.urls')),
     path('django_plotly_dash/', include('django_plotly_dash.urls')), 
+    path('',include('apps.to_do.urls')),
 ]

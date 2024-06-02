@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+</head>
+<body>
+    <h1>Sensor Data</h1>
+    <table border="1">
+        <tr>
+            <th>Sensor ID</th>
+            <th>Temperature (°C)</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for reading in readings %}
+        <tr>
+            <td>{{ reading.sensor_id }}</td>
+            <td>{{ reading.temperature }}</td>
+            <td>{{ reading.timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
