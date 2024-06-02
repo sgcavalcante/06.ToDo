@@ -13,6 +13,7 @@ dash-table==5.0.0
 dj-database-url==2.2.0
 Django==5.0.6
 django-plotly-dash==2.3.1
+djangorestframework==3.15.1
 dpd-static-support==0.0.5
 dpd_components==0.1.0
 Flask==3.0.3
