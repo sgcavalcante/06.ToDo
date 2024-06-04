@@ -7,10 +7,11 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
         // Recarrega a página a cada 30 segundos (30000 milissegundos)
-        setTimeout(function(){
-            window.location.reload(1);
-        }, 30000);
-
+        function reloadPage() {
+            setTimeout(function(){
+                window.location.reload();
+            }, 30000);
+        }
         // Função para obter e exibir a hora atual
         function displayTime() {
             var now = new Date();
@@ -33,7 +34,7 @@
         }
     </script>
 </head>
-<body>
+<body onload="reloadPage()">
     <h1>Sensor Data</h1>
     <p>Hora Atual: <span id="current-time"></span></p>
 
