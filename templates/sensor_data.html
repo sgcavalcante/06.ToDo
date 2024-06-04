@@ -41,29 +41,43 @@
     <form method="GET">
         <label for="sensor_id">Sensor ID:</label>
         <input type="text" id="sensor_id" name="sensor_id">
-        <!--
-            <label for="start_date">Data de Início:</label>
-            <input type="datetime-local" id="start_date" name="start_date">
-            <label for="end_date">Data de Fim:</label>
-            <input type="datetime-local" id="end_date" name="end_date">
-        -->
-            <button type="submit">Filtrar</button>
+        
+        <label for="start_date">Data de Início:</label>
+        <input type="datetime-local" id="start_date" name="start_date">
+        <label for="end_date">Data de Fim:</label>
+        <input type="datetime-local" id="end_date" name="end_date">
+    
+        <button type="submit">Filtrar</button>
     </form>
-
+    <!--opcao 001
     <div id="graph"></div>
-    <table border="1">
-        <tr>
-            <th>Sensor ID</th>
-            <th>Temperature (°C)</th>
-            <th>Timestamp</th>
-        </tr>
-        {% for reading in readings %}
-        <tr>
-            <td>{{ reading.sensor_id }}</td>
-            <td>{{ reading.temperatura }}</td>
-            <td>{{ reading.timestamp }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+    -->
+    <!--opcao 002
+        <div id="graph">{% autoescape off %}{{ graph_div }}{% endautoescape %}</div>
+    -->
+    <!--opcao 003-->
+    {% for graph in graphs %}
+        <div>
+            <h2>Sensor ID: {{ graph.sensor_id }}</h2>
+            <div id="graph-{{ graph.sensor_id }}">{% autoescape off %}{{ graph.graph_div }}{% endautoescape %}</div>
+        </div>
+    {% endfor %}
+    <div>
+        
+        <table border="1">
+            <tr>
+                <th>Sensor ID</th>
+                <th>Temperature (°C)</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for reading in readings %}
+            <tr>
+                <td>{{ reading.sensor_id }}</td>
+                <td>{{ reading.temperatura }}</td>
+                <td>{{ reading.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>    
+    </body>
+    </html>
