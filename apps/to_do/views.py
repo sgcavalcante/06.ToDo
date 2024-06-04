@@ -171,7 +171,7 @@ def sensor_data(request):
     for sensor, data in sensors_data.items():
         fig = px.line(x=data['timestamps'], y=data['temperaturas'], title=f'Temperaturas do Sensor {sensor}', labels={'x': 'Timestamp', 'y': 'Temperature (°C)'})
         fig.update_traces(mode='markers+lines')
-        fig.update_layout(autosize=True, margin=dict(l=0, r=0, b=0, t=30))
+        fig.update_layout(autosize=True, margin=dict(l=0, r=0, b=0, t=30), width=800, height=400)
         graph_div = fig.to_html(full_html=False)
         graphs.append({'sensor_id': sensor, 'graph_div': graph_div})
 

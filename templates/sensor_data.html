@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sensor Data</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script>
+    <style>
+        .graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .graph-item {
+            flex: 0 0 48%; /* Ajuste a porcentagem conforme necessário */
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        </style>
+        <script>
         // Recarrega a página a cada 30 segundos (30000 milissegundos)
         function reloadPage() {
             setTimeout(function(){
@@ -23,18 +35,21 @@
             var timeString = hours + ':' + minutes + ':' + seconds;
             document.getElementById('current-time').innerText = timeString;
         }
-
+        </script>
+        <script>
         // Chama a função displayTime quando a página carrega
         window.onload = function() {
             displayTime();
 
-            // Renderizar o gráfico Plotly
-            var graph_json = {{ graph_json|safe }};
-            Plotly.react('graph', graph_json.data, graph_json.layout);
+            // Renderizar o gráfico Plotly acho que esta na parte errada
+            
+            //    var graph_json = {{ graph_json|safe }};
+            //    Plotly.react('graph', graph_json.data, graph_json.layout);
+            
         }
     </script>
 </head>
-<body onload="reloadPage()">
+<body onload="reloadPage(); displayTime()">
     <h1>Sensor Data</h1>
     <p>Hora Atual: <span id="current-time"></span></p>
 
@@ -57,12 +72,18 @@
         <div id="graph">{% autoescape off %}{{ graph_div }}{% endautoescape %}</div>
     -->
     <!--opcao 003-->
-    {% for graph in graphs %}
-        <div>
+    <div class="graph-container">
+
+        {% for graph in graphs %}
+        
+        <div class="graph-item">
             <h2>Sensor ID: {{ graph.sensor_id }}</h2>
             <div id="graph-{{ graph.sensor_id }}">{% autoescape off %}{{ graph.graph_div }}{% endautoescape %}</div>
         </div>
-    {% endfor %}
+        {% endfor %}
+        
+    </div>
+    
     <div>
         
         <table border="1">
