@@ -26,3 +26,5 @@ app.layout = html.Div([
         style={'width': '50vw', 'height': '50vh'}  # Ajustar o gráfico ao contêiner
     )
 ], style={'width': '50vw', 'height': '50vh', 'overflow': 'hidden'})  # Ajustar o contêiner
+
+

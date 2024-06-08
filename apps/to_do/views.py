@@ -176,3 +176,56 @@ def sensor_data(request):
         graphs.append({'sensor_id': sensor, 'graph_div': graph_div})
 
     return render(request, 'sensor_data.html', context={'graphs': graphs,'readings':readings})
+
+
+
+# views.py
+from django.shortcuts import render
+from .models import TemperaturaSensores
+import plotly.graph_objs as go
+import plotly.io as pio
+
+def plot_view(request):
+    # Extrair os dados do banco de dados
+    sensor_data = TemperaturaSensores.objects.all()
+
+    # Agrupar os dados por sensor_id
+    sensor_groups = {}
+    for data in sensor_data:
+        if data.sensor_id not in sensor_groups:
+            sensor_groups[data.sensor_id] = {'x': [], 'y': []}
+        sensor_groups[data.sensor_id]['x'].append(data.timestamp)
+        sensor_groups[data.sensor_id]['y'].append(data.temperatura)
+
+    # Criar a figura
+    fig = go.Figure()
+
+    # Adicionar um gráfico para cada sensor_id
+    for sensor_id, data in sensor_groups.items():
+        fig.add_trace(go.Scatter(
+            x=data['x'],
+            y=data['y'],
+            mode='lines+markers',
+            name=f'Sensor {sensor_id}'
+        ))
+
+    # Atualizar o layout
+    fig.update_layout(
+        title_text="Gráficos de Temperatura dos Sensores",
+        height=600,
+        width=800
+    )
+
+    # Converter a figura para HTML
+    graph_html = pio.to_html(fig, full_html=False)
+
+    return render(request, 'plot.html', {'graph_html': graph_html})
+
+   
+
+
+def deletar_dados(request):
+    dados = TemperaturaSensores.objects.all()
+    dados.delete()
+    return render(request, 'sensor_data.html')
+   
