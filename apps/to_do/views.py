@@ -143,6 +143,7 @@ from django.shortcuts import render
 import plotly.express as px
 from .models import TemperaturaSensores
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 
 def sensor_data(request):
     # Parâmetros de filtro
@@ -161,10 +162,13 @@ def sensor_data(request):
 
     # Criar um gráfico separado para cada sensor
     sensors_data = {}
+    local_tz = timezone.get_current_timezone()
     for reading in readings:
+        # Ajustar o timestamp para o fuso horário local
+        local_timestamp = reading.timestamp.astimezone(local_tz)
         if reading.sensor_id not in sensors_data:
             sensors_data[reading.sensor_id] = {'timestamps': [], 'temperaturas': []}
-        sensors_data[reading.sensor_id]['timestamps'].append(reading.timestamp)
+        sensors_data[reading.sensor_id]['timestamps'].append(local_timestamp)
         sensors_data[reading.sensor_id]['temperaturas'].append(reading.temperatura)
 
     graphs = []
@@ -175,8 +179,7 @@ def sensor_data(request):
         graph_div = fig.to_html(full_html=False)
         graphs.append({'sensor_id': sensor, 'graph_div': graph_div})
 
-    return render(request, 'sensor_data.html', context={'graphs': graphs,'readings':readings})
-
+    return render(request, 'sensor_data.html', context={'graphs': graphs, 'readings': readings})
 
 
 # views.py
@@ -184,6 +187,7 @@ from django.shortcuts import render
 from .models import TemperaturaSensores
 import plotly.graph_objs as go
 import plotly.io as pio
+from django.utils import timezone
 
 def plot_view(request):
     # Extrair os dados do banco de dados
@@ -191,10 +195,13 @@ def plot_view(request):
 
     # Agrupar os dados por sensor_id
     sensor_groups = {}
+    local_tz = timezone.get_current_timezone()
     for data in sensor_data:
+        # Ajustar o timestamp para o fuso horário local
+        local_timestamp = data.timestamp.astimezone(local_tz)
         if data.sensor_id not in sensor_groups:
             sensor_groups[data.sensor_id] = {'x': [], 'y': []}
-        sensor_groups[data.sensor_id]['x'].append(data.timestamp)
+        sensor_groups[data.sensor_id]['x'].append(local_timestamp)
         sensor_groups[data.sensor_id]['y'].append(data.temperatura)
 
     # Criar a figura
@@ -213,13 +220,16 @@ def plot_view(request):
     fig.update_layout(
         title_text="Gráficos de Temperatura dos Sensores",
         height=600,
-        width=800
+        width=800,
+        xaxis_title="Timestamp",
+        yaxis_title="Temperatura (°C)"
     )
 
     # Converter a figura para HTML
     graph_html = pio.to_html(fig, full_html=False)
 
     return render(request, 'plot.html', {'graph_html': graph_html})
+
 
    
 
