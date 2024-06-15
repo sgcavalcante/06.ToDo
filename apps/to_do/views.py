@@ -259,7 +259,7 @@ def peso_view(request):
     local_tz = timezone.get_current_timezone()
     for data in pessoa_data:
         # Ajustar o timestamp para o fuso horário local
-        local_timestamp = data.timestamp.astimezone(local_tz)
+        local_timestamp = data.timestamp1.astimezone(local_tz)
         if data.pessoa_id not in pessoas_groups:
             pessoas_groups[data.pessoa_id] = {'x': [], 'y': []}
         pessoas_groups[data.pessoa_id]['x'].append(local_timestamp)
