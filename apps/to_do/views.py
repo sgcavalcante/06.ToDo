@@ -301,4 +301,4 @@ def deletar_dados(request):
 def deletar_dados_peso(request):
     dados = Peso.objects.all()
     dados.delete()
-    return render(request, 'monitor_peso.html')
+    return redirect('monitor_peso.html')
