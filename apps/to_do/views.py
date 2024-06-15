@@ -247,7 +247,7 @@ def peso_view(request):
         if form.is_valid():
             pessoa_id = form.cleaned_data['pessoa_id']
             peso = form.cleaned_data['peso']
-            reading = TemperaturaSensores(pessoa_id=pessoa_id, peso=peso)
+            reading = Peso(pessoa_id=pessoa_id, peso=peso)
             reading.save()
             return redirect('peso_view')  # Redireciona para limpar o formulário
     else:
