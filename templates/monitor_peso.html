@@ -13,9 +13,13 @@
     <title>Plotly Chart</title>
 </head>
 <body>
-    <h1>Plotly Chart in Django</h1>
-    <div>
-        {{ graph_html|safe }}
-    </div>
+    <h1>Inserir Peso</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+    <h1>Gráfico de Peso</h1>
+    <div>{{ graph_html|safe }}</div>
 </body>
 </html>

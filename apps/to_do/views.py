@@ -1,7 +1,7 @@
 
 import io
 from django.http import HttpResponse,JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import TemperaturaSensores
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -231,6 +231,65 @@ def plot_view(request):
     return render(request, 'plot.html', {'graph_html': graph_html})
 
 
+from django.shortcuts import render
+from .models import TemperaturaSensores,Peso
+from .forms import PesoForm
+import plotly.graph_objs as go
+import plotly.io as pio
+from django.utils import timezone
+
+
+    # Extrair os dados do banco de dados
+def peso_view(request):
+
+    if request.method == 'POST':
+        form = PesoForm(request.POST)
+        if form.is_valid():
+            pessoa_id = form.cleaned_data['pessoa_id']
+            peso = form.cleaned_data['peso']
+            reading = TemperaturaSensores(pessoa_id=pessoa_id, peso=peso)
+            reading.save()
+            return redirect('peso_view')  # Redireciona para limpar o formulário
+    else:
+        form = PesoForm()
+    pessoa_data = Peso.objects.all()
+
+    # Agrupar os dados por sensor_id
+    pessoas_groups = {}
+    local_tz = timezone.get_current_timezone()
+    for data in pessoa_data:
+        # Ajustar o timestamp para o fuso horário local
+        local_timestamp = data.timestamp.astimezone(local_tz)
+        if data.pessoa_id not in pessoas_groups:
+            pessoas_groups[data.pessoa_id] = {'x': [], 'y': []}
+        pessoas_groups[data.pessoa_id]['x'].append(local_timestamp)
+        pessoas_groups[data.pessoa_id]['y'].append(data.peso)
+
+    # Criar a figura
+    fig = go.Figure()
+
+    # Adicionar um gráfico para cada sensor_id
+    for pessoa_id, data in pessoas_groups.items():
+        fig.add_trace(go.Scatter(
+            x=data['x'],
+            y=data['y'],
+            mode='lines+markers',
+            name=f'Sensor {pessoa_id}'
+        ))
+
+    # Atualizar o layout
+    fig.update_layout(
+        title_text="Gráficos",
+        height=600,
+        width=800,
+        xaxis_title="Timestamp",
+        yaxis_title="Peso (kg)"
+    )
+
+    # Converter a figura para HTML
+    graph_html = pio.to_html(fig, full_html=False)
+
+    return render(request, 'monitor_peso.html', {'graph_html': graph_html})
    
 
 
