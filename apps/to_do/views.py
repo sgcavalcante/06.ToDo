@@ -289,7 +289,7 @@ def peso_view(request):
     # Converter a figura para HTML
     graph_html = pio.to_html(fig, full_html=False)
 
-    return render(request, 'monitor_peso.html', {'graph_html': graph_html})
+    return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html})
    
 
 
