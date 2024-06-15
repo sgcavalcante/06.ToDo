@@ -18,6 +18,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Enviar</button>
+        <a href = "{% url 'deletar_dados_peso' %}" >Listar Dados </a>
     </form>
     <h1>Gráfico de Peso</h1>
     <div>{{ graph_html|safe }}</div>
