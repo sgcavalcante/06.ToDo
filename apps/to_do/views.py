@@ -296,7 +296,7 @@ def peso_view(request):
 def deletar_dados(request):
     dados = TemperaturaSensores.objects.all()
     dados.delete()
-    return render(request, 'sensor_data.html')
+    return redirect(request, 'sensor_data.html')
    
 def deletar_dados_peso(request):
     dados = Peso.objects.all()
