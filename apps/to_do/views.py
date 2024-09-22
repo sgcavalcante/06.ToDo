@@ -145,7 +145,7 @@ from .models import TemperaturaSensores
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 
-def sensor_data(request):
+def sensordata(request):
     # Parâmetros de filtro
     sensor_id = request.GET.get('sensor_id')
     start_date = request.GET.get('start_date')

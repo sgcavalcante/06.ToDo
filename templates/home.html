@@ -3,15 +3,24 @@
 
 {% load static %}
 {% block conteudo %}
-    <h1>.ToDo</h1>
-    <div class="form-control" >
-        <button class="btn btn-primary">Adicionar ToDo</button>
-        <button class="btn btn-success">Atualizar ToDo</button>
-    </div>
-    <div class="form-control wrapper" style="background-color: black">
-         
-        <a href="{% url 'monitortemp' %}" class="btn btn-primary " style="text-align: center;width:100%">Monitor de Temperatura</a>
-    </div>
+<h1>.ToDo</h1>
+<div class="form-control ">
+    <button class="btn btn-primary">Adicionar ToDo</button>
+    <button class="btn btn-success">Atualizar ToDo</button>
+</div>
+
+ 
+
+<div class="form-control" style="background-color: black;">
+    <a href="{% url 'monitortemp' %}" class="btn btn-primary" style="width: 200px ; ">Monitor de Temperatura</a>
+    <a href="{% url 'sensordata' %}" class="btn btn-primary" style="width: 200px;">Dashboard Temperatura</a>
+</div>
+
+<!-- Caso precise de mais conteúdo aqui -->
+<div class="form-control wrapper" style="background-color: black">
+    <!-- Coloque outros elementos aqui, se necessário -->
+</div>
+
 {% endblock conteudo %}
 
 <!--{% include 'footer.html' %}-->
