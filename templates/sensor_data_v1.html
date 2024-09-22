@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+
+{% load static %}
+{% block conteudo %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .graph-item {
+            flex: 0 0 48%; /* Ajuste a porcentagem conforme necessário */
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        </style>
+        <script>
+        // Recarrega a página a cada 30 segundos (30000 milissegundos)
+        function reloadPage() {
+            setTimeout(function(){
+                window.location.reload();
+            }, 30000);
+        }
+        // Função para obter e exibir a hora atual
+        function displayTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            var timeString = hours + ':' + minutes + ':' + seconds;
+            document.getElementById('current-time').innerText = timeString;
+        }
+        </script>
+        <script>
+        // Chama a função displayTime quando a página carrega
+        window.onload = function() {
+            displayTime();
+
+            // Renderizar o gráfico Plotly acho que esta na parte errada
+            
+            //    var graph_json = {{ graph_json|safe }};
+            //    Plotly.react('graph', graph_json.data, graph_json.layout);
+            
+        }
+    </script>
+</head>
+
+    <h1>Sensor Data</h1>
+     
+        <div class="form-control" style="background-color: black;">
+            <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
+             
+        </div>       
+ 
+<div class="form-control" style="background-color: rgb(72, 103, 115);">
+
+    <p class="btn btn-primary">Hora Atual: <span id="current-time"></span></p>
+    
+    <!-- Formulário de filtros -->
+    <form method="GET">
+        <label for="sensor_id">Sensor ID:</label>
+        <input type="text" id="sensor_id" name="sensor_id">
+        
+        <label for="start_date">Data de Início:</label>
+        <input type="datetime-local" id="start_date" name="start_date">
+        <label for="end_date">Data de Fim:</label>
+        <input type="datetime-local" id="end_date" name="end_date">
+        
+        <button type="submit">Filtrar</button>
+    </form>
+</div>
+    <!--opcao 001
+    <div id="graph"></div>
+    -->
+    <!--opcao 002
+        <div id="graph">{% autoescape off %}{{ graph_div }}{% endautoescape %}</div>
+    -->
+    <!--opcao 003-->
+    <div class="form-control " style="background-color: black;">
+    <div class="graph-container">
+
+         
+        
+        <div class="graph-item">
+            <h2>Sensor ID: {{ graphs.1.sensor_id }}</h2>
+            <div id="graph-{{ graphs.1 }}">{% autoescape off %}{{ graphs.1.graph_div }}{% endautoescape %}</div>
+        </div>
+         
+        
+    </div>
+</div>
+    <div>
+        <a href = "{% url 'deletar_dados' %}" >Deletar Dados </a>
+        <table border="1">
+            <tr>
+                <th>Sensor ID</th>
+                <th>Temperature (°C)</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for reading in readings %}
+            <tr>
+                <td>{{ reading.sensor_id }}</td>
+                <td>{{ reading.temperatura }}</td>
+                <td>{{ reading.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>    
+    {% endblock conteudo %}
