@@ -67,8 +67,8 @@
         displayTime();
       }
       // Atualizar os dados a cada 30 segundos
-      setInterval(displayTime,60000,fetchAndRenderTemperatureData, 30000);
-
+      setInterval(fetchAndRenderTemperatureData, 30000);
+      setInterval(displayTime,1000);
       ///Mostra a hora
   </script>
  </head> 
