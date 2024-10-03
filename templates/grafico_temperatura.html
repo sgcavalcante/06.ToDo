@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+
+{% load static %}
+{% block conteudo %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+    <style>
+        .graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .graph-item {
+            flex: 0 0 48%; /* Ajuste a porcentagem conforme necessário */
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        </style>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+      function fetchAndRenderTemperatureData() {
+          // Usar AJAX para buscar os dados da API
+          fetch('/api/get_temperatura_data/')
+              .then(response => response.json())
+              .then(data => {
+                  var traces = [];
+                  // Para cada sensor, crie uma nova trace no gráfico
+                  for (var sensor_id in data) {
+                      traces.push({
+                          x: data[sensor_id].timestamps,
+                          y: data[sensor_id].temperatures,
+                          mode: 'lines+markers',
+                          name: 'Sensor ' + sensor_id
+                      });
+                  }
+  
+                  // Configuração do layout do gráfico
+                  var layout = {
+                      title: 'Gráficos de Temperatura',
+                      xaxis: { title: 'Timestamp' },
+                      yaxis: { title: 'Temperatura (°C)' },
+                      height: 600,
+                      width: 800
+                  };
+  
+                  // Renderizar o gráfico com Plotly
+                  Plotly.newPlot('temperatura-graph', traces, layout);
+              });
+      }
+  
+      // Carregar os dados e renderizar o gráfico quando a página carregar
+      window.onload = fetchAndRenderTemperatureData;
+  
+      // Atualizar os dados a cada 30 segundos
+      setInterval(fetchAndRenderTemperatureData, 30000);
+  </script>
+ </head> 
+ <h1>Sensor Data</h1>
+     
+        <div class="form-control" style="background-color: black;">
+            <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
+             
+        </div>      
+  <div id="temperatura-graph"></div>
+  
+    {% endblock conteudo %}

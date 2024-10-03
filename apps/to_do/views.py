@@ -1,11 +1,19 @@
 
 import io
 from django.http import HttpResponse,JsonResponse
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from django.shortcuts import render,redirect
-from .models import TemperaturaSensores
+from .models import TemperaturaSensores,Peso
+from .forms import PesoForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+import plotly.express as px
+from plotly.subplots import make_subplots
+#import plotly.graph_objs as go
+import plotly.graph_objects as go
+import plotly.express as px
+import plotly.io as pio
 
 # Create your views here.
 def home(request):
@@ -35,17 +43,7 @@ def receive_data(request):
 #    readings=TemperaturaSensores.objects.all().order_by('-timestamp')
 #    return render(request,'sensor_data.html',{'readings':readings})
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-import plotly.express as px
-#from django.shortcuts import render
-#from .models import TemperaturaSensores
 
-import plotly.express as px
-#from django.shortcuts import render
-#from .models import TemperaturaSensores
-from django.utils.dateparse import parse_datetime
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-from django.utils.dateparse import parse_datetime
 
 
 #opcao 01
@@ -139,11 +137,7 @@ def sensor_data(request):
 '''
 
 #opcao 003
-from django.shortcuts import render
-import plotly.express as px
-from .models import TemperaturaSensores
-from django.utils.dateparse import parse_datetime
-from django.utils import timezone
+
 
 def sensordata(request):
     # Parâmetros de filtro
@@ -183,11 +177,7 @@ def sensordata(request):
 
 
 # views.py
-from django.shortcuts import render
-from .models import TemperaturaSensores
-import plotly.graph_objs as go
-import plotly.io as pio
-from django.utils import timezone
+
 
 def plot_view(request):
     # Extrair os dados do banco de dados
@@ -231,12 +221,6 @@ def plot_view(request):
     return render(request, 'plot.html', {'graph_html': graph_html})
 
 
-from django.shortcuts import render
-from .models import TemperaturaSensores,Peso
-from .forms import PesoForm
-import plotly.graph_objs as go
-import plotly.io as pio
-from django.utils import timezone
 
 
     # Extrair os dados do banco de dados
@@ -302,3 +286,29 @@ def deletar_dados_peso(request):
     dados = Peso.objects.all()
     dados.delete()
     return redirect('peso_view')
+
+
+################################
+from django.http import JsonResponse
+from .models import TemperaturaSensores
+from django.utils import timezone
+
+
+def grafico_temperatura(request):
+    return render(request, 'grafico_temperatura.html')
+
+
+@api_view(['GET'])
+def get_temperatura_data(request):
+    sensor_data = TemperaturaSensores.objects.all()
+    
+    sensors_groups = {}
+    local_tz = timezone.get_current_timezone()
+    for data in sensor_data:
+        local_timestamp = data.timestamp.astimezone(local_tz)
+        if data.sensor_id not in sensors_groups:
+            sensors_groups[data.sensor_id] = {'timestamps': [], 'temperatures': []}
+        sensors_groups[data.sensor_id]['timestamps'].append(local_timestamp)
+        sensors_groups[data.sensor_id]['temperatures'].append(data.temperatura)
+    
+    return JsonResponse(sensors_groups)
