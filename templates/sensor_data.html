@@ -20,36 +20,31 @@
             margin-bottom: 20px;
         }
         </style>
-        <script>
-        // Recarrega a página a cada 30 segundos (30000 milissegundos)
-        function reloadPage() {
-            setTimeout(function(){
-                window.location.reload();
-            }, 30000);
-        }
-        // Função para obter e exibir a hora atual
-        function displayTime() {
-            var now = new Date();
-            var hours = now.getHours();
-            var minutes = now.getMinutes();
-            var seconds = now.getSeconds();
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            var timeString = hours + ':' + minutes + ':' + seconds;
-            document.getElementById('current-time').innerText = timeString;
-        }
-        </script>
-        <script>
-        // Chama a função displayTime quando a página carrega
-        window.onload = function() {
-            displayTime();
-
-            // Renderizar o gráfico Plotly acho que esta na parte errada
-            
-            //    var graph_json = {{ graph_json|safe }};
-            //    Plotly.react('graph', graph_json.data, graph_json.layout);
-            
-        }
+ <script>
+    // Recarrega a página a cada 30 segundos (30000 milissegundos)
+    function reloadPage() {
+        setTimeout(function(){
+            window.location.reload();
+        }, 60000); // 60 segundos
+    }
+    
+    // Função para obter e exibir a hora atual
+    function displayTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        var timeString = hours + ':' + minutes + ':' + seconds;
+        document.getElementById('current-time').innerText = timeString;
+    }
+    
+    // Chama a função displayTime e reloadPage quando a página carrega
+    window.onload = function() {
+        displayTime();
+        reloadPage();  // Aqui você chama a função para recarregar a página
+    }
     </script>
 </head>
 
