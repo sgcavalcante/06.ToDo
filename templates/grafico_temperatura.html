@@ -21,6 +21,16 @@
         </style>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script>
+    function displayTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        var timeString = hours + ':' + minutes + ':' + seconds;
+        document.getElementById('current-time').innerText = timeString;
+    }
       function fetchAndRenderTemperatureData() {
           // Usar AJAX para buscar os dados da API
           fetch('/api/get_temperatura_data/')
@@ -52,16 +62,25 @@
       }
   
       // Carregar os dados e renderizar o gráfico quando a página carregar
-      window.onload = fetchAndRenderTemperatureData;
-  
+      window.onload = function(){
+        fetchAndRenderTemperatureData();
+        displayTime();
+      }
       // Atualizar os dados a cada 30 segundos
-      setInterval(fetchAndRenderTemperatureData, 30000);
+      setInterval(displayTime,60000,fetchAndRenderTemperatureData, 30000);
+
+      ///Mostra a hora
   </script>
  </head> 
  <h1>Sensor Data</h1>
      
         <div class="form-control" style="background-color: black;">
-            <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
+            <div>
+                <p class="btn btn-primary">Hora Atual: <span id="current-time"></span></p>
+            </div>
+            <div>
+                <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
+            </div>
              
         </div>      
   <div id="temperatura-graph"></div>
