@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<title>Wrong address</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script>
+    window.addEventListener("click", function(){
+        document.getElementById("demo").innerHTML = Math.random();
+    });
+
+    function myfocus(x){
+        x.style.background = "pink"
+    }
+
+    function semfocus(x){
+        x.style.background = "white"
+    }
+
+    function mymessage_on(){
+        alert("Oi, isso é um teste 1");
+    }
+
+    function mymessage_off(){
+        alert("Oi, isso é um teste 2");
+    }
+
+
+    function mOver(obj){
+        obj.innerHTML = "Thank You"
+        
+    }
+
+    function mOut(obj){
+        obj.innerHTML = "Mouse Over Me"
+    }
+
+    function upperCase(){
+        const x = document.getElementById("fname");
+        //x.value = x.value.toLowerCase();
+        x.value = x.value.toUpperCase();
+    }
+</script>
+<body>
+    <div>
+        <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
+    </div>
+<hr>     
+<h1>Ooops!</h1>
+
+<h2>Página Não Encontrada!</h2>
+
+<br>
+<input type="text" id="fname" oninput="upperCase()">
+<br>
+<br>
+<div onmouseover="mOver(this)" onmouseout="mOut(this)"
+     onmousedown = "mymessage_on(this)" 
+style="background-color:#D94A38;width:120px;height:20px;padding:40px;">
+Mouse Over Me
+
+</div>
+<br>
+
+<br>
+<div onmouseover="mOver(this)" onmouseout="mOut(this)"
+    onmouseup = "mymessage_off(this)"
+style="background-color:#4338d9;width:120px;height:20px;padding:40px;">
+Mouse Over Me
+
+</div>
+<br>
+Enter your name: <input type="text" onfocus="myfocus(this)" onblur="semfocus(this)">
+
+<br>
+<div>
+    <p id ="demo"></p>
+</div>
+ 
+<div class="w3-container">
+    <h2>Card Example</h2>
+    <div class=w3-row">
+
+        <div class="w3-col m5">
+            
+            <div class="w3-card-4 w3-dark-grey" style="width:50%">
+                
+                <div class="w3-container w3-center">
+                    <h3>Friend Request</h3>
+                    <img src="img_avatar3.png" alt="Avatar" style="width:80%">
+                    <h5>John Doe</h5>
+                    
+                    <div class="w3-section">
+                        <button class="w3-button w3-green">Accept</button>
+                        <button class="w3-button w3-red">Decline</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="w3-col m5">    
+            <div class="w3-card-4 w3-dark-grey" style="width:50%">
+            
+                <div class="w3-container w3-center">
+                    <h3>Friend Request</h3>
+                    <img src="img_avatar3.png" alt="Avatar" style="width:80%">
+                    <h5>John Doe</h5>
+                    
+                    <div class="w3-section">
+                        <button class="w3-button w3-green">Accept</button>
+                        <button class="w3-button w3-red">Decline</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  </div>     
+    
+
+ 
+</body>
+</html>

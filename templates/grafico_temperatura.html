@@ -47,7 +47,6 @@
                       });
                   }
   
-                  // Configuração do layout do gráfico
                   var layout = {
                       title: 'Gráficos de Temperatura',
                       xaxis: { title: 'Timestamp' },
@@ -58,6 +57,7 @@
   
                   // Renderizar o gráfico com Plotly
                   Plotly.newPlot('temperatura-graph', traces, layout);
+                  // Configuração do layout do gráfico
               });
       }
   
@@ -67,7 +67,7 @@
         displayTime();
       }
       // Atualizar os dados a cada 30 segundos
-      setInterval(fetchAndRenderTemperatureData, 30000);
+      setInterval(fetchAndRenderTemperatureData, 300000);
       setInterval(displayTime,1000);
       ///Mostra a hora
   </script>
@@ -77,7 +77,9 @@
         <div class="form-control" style="background-color: black;">
             <div>
                 <p class="btn btn-primary">Hora Atual: <span id="current-time"></span></p>
+                
             </div>
+
             <div>
                 <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
             </div>

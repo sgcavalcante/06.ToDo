@@ -30,8 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = False
+#DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = ['www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-f8f8d.up.railway.app','https://sanicousintario.up.railway.app','https://www.ventosolares.com.br']
@@ -137,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+ 
 
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
