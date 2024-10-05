@@ -32,9 +32,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 #DEBUG = os.getenv('DEBUG') == 'True'
-ALLOWED_HOSTS = ['sgc.up.raulway.app','www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
+ALLOWED_HOSTS = ['s6c.up.railway.app','www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-f8f8d.up.railway.app','https://sgc.up.raulway.app','https://sanicousintario.up.railway.app','https://www.ventosolares.com.br']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-f8f8d.up.railway.app','https://s6c.up.railway.app','https://sanicousintario.up.railway.app','https://www.ventosolares.com.br']
 
 
 # Application definition
