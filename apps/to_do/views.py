@@ -19,6 +19,9 @@ import plotly.io as pio
 def home(request):
     return render(request,'home.html')
 
+def index(request):
+    return render(request,'index.html')
+
 def monitortemp(request):
     return render(request,'MonitorTemp.html')
 
