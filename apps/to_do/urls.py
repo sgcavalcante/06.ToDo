@@ -2,8 +2,8 @@
 from django.urls import path,include
 from apps.to_do.views import index,home,monitortemp,sensordata,receive_data,plot_view,deletar_dados,peso_view,deletar_dados_peso,get_temperatura_data,grafico_temperatura
 urlpatterns = [ 
-    path('', home, name='home'),
-    path('index', index, name='index'),
+    path('home', home, name='home'),
+    path('', index, name='index'),
     path('monitortemp', monitortemp, name='monitortemp'),
     path('sensordata/',sensordata,name='sensordata'),
     path('api/receive-data/', receive_data, name='receive_data'),
