@@ -20,7 +20,8 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR ,"media/")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -30,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 #DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = ['s6c.up.railway.app','www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
 
@@ -73,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_plotly_dash.middleware.BaseMiddleware',  # Middleware necessário
     'django_plotly_dash.middleware.ExternalRedirectionMiddleware',  # Middleware necessário
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
@@ -150,14 +152,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIR = [os.path.join(BASE_DIR,'static'),]
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-STATICFILES_DIR = (
-    os.path.join(BASE_DIR,'static'),
-)
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
