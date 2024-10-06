@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 #DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = ['s6c.up.railway.app','www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
 
