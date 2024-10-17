@@ -14,7 +14,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
 import plotly.io as pio
-
+ 
 # Create your views here.
 def home(request):
     return render(request,'home.html')
@@ -182,6 +182,7 @@ def sensordata(request):
 # views.py
 
 
+
 def plot_view(request):
     # Extrair os dados do banco de dados
     sensor_data = TemperaturaSensores.objects.all()
@@ -199,7 +200,7 @@ def plot_view(request):
 
     # Criar a figura
     fig = go.Figure()
-
+    
     # Adicionar um gráfico para cada sensor_id
     for sensor_id, data in sensor_groups.items():
         fig.add_trace(go.Scatter(
@@ -234,6 +235,7 @@ def peso_view(request):
         if form.is_valid():
             pessoa_id = form.cleaned_data['pessoa_id']
             peso = form.cleaned_data['peso']
+            
             reading = Peso(pessoa_id=pessoa_id, peso=peso)
             reading.save()
             return redirect('peso_view')  # Redireciona para limpar o formulário
@@ -278,7 +280,29 @@ def peso_view(request):
 
     return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html})
    
+####
+def plot_gauge(request):
+    pessoa_data = Peso.objects.order_by('id').last()#(field_name='peso')
+    #for data in pessoa_data:
+        #print(pessoa_data.peso[0])
+    print(pessoa_data.peso)
+    fig = go.Figure(go.Indicator(
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    value = pessoa_data.peso,
+    mode = "gauge+number+delta",
+    title = {'text': "Speed"},
+    delta = {'reference': 95},
+    gauge = {'axis': {'range': [None, 200]},
+             'steps' : [
+                 {'range': [0, 250], 'color': "lightgray"},
+                 {'range': [110, 250], 'color': "gray"}],
+             'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 95}}))
 
+     
+    graph_html1 = pio.to_html(fig, full_html=False)
+    return render(request, 'plot_copy.html', {'graph_html1': graph_html1})
+
+####
 
 def deletar_dados(request):
     dados = TemperaturaSensores.objects.all()

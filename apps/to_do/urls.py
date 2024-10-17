@@ -1,6 +1,6 @@
 # core/urls.py
 from django.urls import path,include
-from apps.to_do.views import index,home,monitortemp,sensordata,receive_data,plot_view,deletar_dados,peso_view,deletar_dados_peso,get_temperatura_data,grafico_temperatura
+from apps.to_do.views import index,home,monitortemp,sensordata,receive_data,plot_view,deletar_dados,peso_view,deletar_dados_peso,get_temperatura_data,grafico_temperatura,plot_gauge
 urlpatterns = [ 
     path('home', home, name='home'),
     path('', index, name='index'),
@@ -13,4 +13,6 @@ urlpatterns = [
     path('deletar_dado_peso/', deletar_dados_peso, name='deletar_dados_peso'),
     path('grafico_temperatura/', grafico_temperatura, name='grafico_temperatura'),  # Rota para o template
     path('api/get_temperatura_data/', get_temperatura_data, name='get_temperatura_data'),
+    path('plot_gauge', plot_gauge, name='plot_gauge'),
+    
 ]
