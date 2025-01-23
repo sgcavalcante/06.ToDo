@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.defaultProfile.windows": "Git Bash", // Para Windows
+    
+    "python.pythonPath": "${workspaceFolder}\\venv\\scripts\\python.exe" ,
+    "python.terminal.activateEnvironment": true
+}
