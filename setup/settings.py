@@ -110,7 +110,7 @@ PGPASSWORD=os.getenv("PGPASSWORD")  # ErflndgNadXEJEwnVEeaLXvpdpZfmEQW
 PGDATABASE=os.getenv("PGDATABASE")  # railway
 PGPORT=os.getenv("PORT")            # 29466
 '''
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -121,6 +121,7 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+'''
 
 
 
