@@ -104,13 +104,13 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=20)}
 
-'''
+
 PGHOST=os.getenv("PGHOST")          # monorail.proxy.rlwy.net
 PGUSER=os.getenv("PGUSER")          # postgres
 PGPASSWORD=os.getenv("PGPASSWORD")  # ErflndgNadXEJEwnVEeaLXvpdpZfmEQW
 PGDATABASE=os.getenv("PGDATABASE")  # railway
 PGPORT=os.getenv("PORT")            # 29466
-'''
+
 '''
 DATABASES = {
     'default': {
