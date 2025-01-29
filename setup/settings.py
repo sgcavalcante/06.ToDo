@@ -112,7 +112,7 @@ PGDATABASE=os.getenv("PGDATABASE")  # railway
 PGPORT=os.getenv("PORT")            # 29466
 '''
 
-
+#teste
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
