@@ -106,10 +106,10 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 PGHOST="postgres.railway.internal"
-PGPORT=5432
+PGPORT="5432"
 PGUSER="postgres"
 PGPASSWORD=""
-PGDATABASE="railway'"
+PGDATABASE="'railway' "
 
 #ssads
 #teste
