@@ -109,7 +109,7 @@ PGHOST="postgres.railway.internal"
 PGPORT="5432"
 PGUSER="postgres"
 PGPASSWORD=""
-PGDATABASE="'railway' "
+PGDATABASE="railway"
 
 #ssads
 #teste
