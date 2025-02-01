@@ -339,3 +339,6 @@ def get_temperatura_data(request):
         sensors_groups[data.sensor_id]['temperatures'].append(data.temperatura)
     
     return JsonResponse(sensors_groups)
+
+
+ 
