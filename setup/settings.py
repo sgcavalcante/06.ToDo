@@ -31,8 +31,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR ,"media/")
 SECRET_KEY = str(os.getenv('CHAVE_SECRETA'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = os.getenv('DEBUG')# == 'True'
+DEBUG = False
+#DEBUG = os.getenv('DEBUG')# == 'True'
 ALLOWED_HOSTS = ['s6c.up.railway.app','www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-f8f8d.up.railway.app','https://s6c.up.railway.app','https://sanicousintario.up.railway.app','https://www.ventosolares.com.br']
