@@ -104,7 +104,7 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=20)}
 
-
+'''
 PGHOST="postgres.railway.internal"
 PGPORT="5432"
 PGUSER="postgres"
@@ -124,7 +124,7 @@ DATABASES = {
         'PORT': os.getenv('PGPORT','5432'),
     }
 }
-
+'''
 
 
 
