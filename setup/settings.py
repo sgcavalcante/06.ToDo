@@ -101,26 +101,23 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-#DATABASE_URL = os.getenv("DATABASE_URL")
-#DATABASES = {'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=20)}
+DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL,conn_max_age=20)}
 
 
 
 
-#ssads
-#teste
+
 
 DATABASES = {
-    
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'MXaDDFUtVkbFbCkYcvKiwwkPuEOzBfjI',
-        'HOST': 'postgres.railway.internal',
-        'PORT': '5432',
+        'NAME': os.getenv('PGDATABASE'),
+        'USER': os.getenv('PGUSER'),
+        'PASSWORD': os.getenv('PGPASSWORD'),
+        'HOST': os.getenv('PGHOST'),
+        'PORT': os.getenv('PGPORT'),
     }
-
 }
 
 
