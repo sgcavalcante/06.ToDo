@@ -300,7 +300,7 @@ def plot_gauge(request):
 
      
     graph_html1 = pio.to_html(fig, full_html=False)
-    return render(request, 'plot_copy.html', {'graph_html1': graph_html1})
+    return render(request, 'plot_gauge.html', {'graph_html1': graph_html1})
 
 ####
 
