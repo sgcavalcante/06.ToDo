@@ -2,25 +2,72 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+        }
+
+        .dashboard-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .chart-box {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 45%;
+        }
+
+        canvas {
+            width: 50%;
+            height: 300px;
+        }
+    </style>
     <script>
         // Recarrega a página a cada 30 segundos (30000 milissegundos)
         function reloadPage() {
             setTimeout(function(){
                 window.location.reload();
-            }, 30000);
+            }, 300000000);
         }
         </script>
     <title>Plotly Chart</title>
 </head>
 <body>
-    <h1>Inserir Peso</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enviar</button>
-        <a href = "{% url 'deletar_dados_peso' %}" >Deletar Dados </a>
-    </form>
-    <h1>Gráfico de Peso</h1>
-    <div>{{ graph_html|safe }}</div>
+    <h1>.ToDo</h1>
+     
+    <div class="form-control wrapper" style="background-color: rgb(102, 95, 95)">
+        <a class="btn btn-primary" href="{% url 'home' %}">Home</a>
+        <h1>Inserir Peso</h1>
+         
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enviar</button>
+            <a href = "{% url 'deletar_dados_peso' %}" >Deletar Dados </a>
+        </form>
+
+        <hr>
+        <div class="dashboard-container">
+            <div class="chart-box">
+                {{ graph_html|safe }}
+            </div>
+        
+            <div class="chart-box">
+                {{ graph_html1|safe }}
+            </div>
+
+           
+        </div>
+         
+    </div>
 </body>
 </html>

@@ -256,6 +256,7 @@ def peso_view(request):
 
     # Criar a figura
     fig = go.Figure()
+    
 
     # Adicionar um gráfico para cada sensor_id
     for pessoa_id, data in pessoas_groups.items():
@@ -278,7 +279,28 @@ def peso_view(request):
     # Converter a figura para HTML
     graph_html = pio.to_html(fig, full_html=False)
 
-    return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html})
+    #####
+    pessoa_data = Peso.objects.order_by('id').last()#(field_name='peso')
+     
+    fig = go.Figure(go.Indicator(
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    value = pessoa_data.peso,
+    mode = "gauge+number+delta",
+    title = {'text': "Peso Atual"},
+    delta = {'reference': 95},
+    gauge = {'axis': {'range': [None, 120]},
+             'steps' : [
+                 {'range': [0, 100], 'color': "lightgray"},
+                 {'range': [100, 120], 'color': "red"}],
+             'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 95}}))
+
+     
+    graph_html1 = pio.to_html(fig, full_html=False)
+    #####
+
+
+
+    return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html,'graph_html1': graph_html1})
    
 ####
 def plot_gauge(request):

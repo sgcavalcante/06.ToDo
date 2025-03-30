@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erro - Página Não Encontrada</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f9f9f9;
+      text-align: center;
+      padding-top: 70px; /* Espaço para o header */
+      padding-bottom: 50px; /* Espaço para o footer */
+    }
+    header, footer {
+      background-color: #333;
+      color: #fff;
+      width: 100%;
+      padding: 15px;
+      position: fixed;
+      left: 0;
+      z-index: 1000;
+    }
+    header {
+      top: 0;
+    }
+    footer {
+      bottom: 0;
+    }
+    .error-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 20px;
+    }
+    .error-container h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .error-container p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #666;
+    }
+    .error-container a {
+      text-decoration: none;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border-radius: 5px;
+    }
+    .error-container a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Meu Site Responsivo</h1>
+  </header>
+  
+  <div class="error-container">
+    <h1>Erro 404</h1>
+    <p>A página que você procura não existe ou ocorreu um erro no processamento.</p>
+    <a href="teste_main.html">Voltar para a Página Principal</a>
+  </div>
+  
+  <footer>
+    <p>&copy; 2025 Meu Site Responsivo</p>
+  </footer>
+  
+  <script>
+    // Captura de erros em tempo de execução e exibição de mensagem personalizada
+    window.onerror = function(message, source, lineno, colno, error) {
+      document.querySelector('.error-container').innerHTML = 
+        '<h1>Erro no Processamento</h1>' +
+        '<p>Ocorreu um erro: ' + message + '</p>' +
+        '<a href="teste_main.html">Voltar para a Página Principal</a>';
+      return true;
+    };
+  </script>
+</body>
+</html>

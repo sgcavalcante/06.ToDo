@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Meu Site</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .login-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .login-container button:hover {
+      background-color: #005a9c;
+    }
+    .login-container .reset-link {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+    .login-container .reset-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="#" method="POST">
+      <input type="email" name="email" placeholder="E-mail" required>
+      <input type="password" name="password" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <a href="#reset-senha" class="reset-link">Esqueceu a senha?</a>
+  </div>
+</body>
+</html>

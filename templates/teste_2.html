@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Site com Animação</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
+    }
+    header {
+      background-color: #007BFF;
+      color: #fff;
+      padding: 40px;
+      text-align: center;
+      transition: background-color 1s;
+    }
+    header:hover {
+      background-color: #0056b3;
+    }
+    section {
+      padding: 40px;
+      min-height: 100vh;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 0;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#secao1">Seção 1</a>
+    <a href="#secao2">Seção 2</a>
+    <a href="#secao3">Seção 3</a>
+  </nav>
+  <header id="secao1">
+    <h1>Bem-vindo ao Site Animado</h1>
+  </header>
+  <section id="secao2">
+    <h2>Sobre o Site</h2>
+    <p>Este site utiliza animações CSS e JavaScript para criar uma experiência interativa.</p>
+    <button id="scrollButton">Ir para Seção 3</button>
+  </section>
+  <section id="secao3">
+    <h2>Contato</h2>
+    <p>Entre em contato conosco para mais informações.</p>
+  </section>
+  <script>
+    document.getElementById('scrollButton').addEventListener('click', function(){
+      document.getElementById('secao3').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
