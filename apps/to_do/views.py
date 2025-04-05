@@ -270,8 +270,8 @@ def peso_view(request):
     # Atualizar o layout
     fig.update_layout(
         title_text="Gráficos",
-        height=600,
-        width=800,
+        width=900,  # defina a largura desejada
+        height=500,
         xaxis_title="Timestamp",
         yaxis_title="Peso (kg)"
     )
