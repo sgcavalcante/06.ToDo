@@ -300,8 +300,8 @@ def peso_view(request):
 
 
 
-    #return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html,'graph_html1': graph_html1})
-    return render(request,'teste_main.html')
+    return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html,'graph_html1': graph_html1})
+    #return render(request,'teste_main.html')
 ####
 def plot_gauge(request):
     pessoa_data = Peso.objects.order_by('id').last()#(field_name='peso')
