@@ -31,8 +31,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR ,"media/")
 SECRET_KEY = str(os.getenv('CHAVE_SECRETA'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = False
 #DEBUG = os.getenv('DEBUG')# == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['s6c.up.railway.app','www.ventosolares.com.br','web-production-f8f8d.up.railway.app','sanicousintario.up.railway.app','127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-f8f8d.up.railway.app','https://s6c.up.railway.app','https://sanicousintario.up.railway.app','https://www.ventosolares.com.br']
@@ -56,7 +57,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
 ]
 
-ASGI_APPLICATION = 'myproject.asgi.application'  # Substitua 'myproject' pelo nome do seu projeto
+ASGI_APPLICATION = 'setup.asgi.application'  # Substitua 'myproject' pelo nome do seu projeto
 
 
 CHANNEL_LAYERS = {
@@ -187,5 +188,11 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 PLOTLY_DASH = {
     'ws_route': 'dpd/ws/channel',  # WebSocket route
     'http_route': 'dpd/views',  # HTTP route
-    'insert_demo_migrations': True,
+    'insert_demo_migrations': False,
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
 }
