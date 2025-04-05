@@ -82,14 +82,14 @@
      
     <div>
         
-        <button class="button" a class="button" href="{% url 'home' %}">Home</a></button>
+        <a class="button" href="{% url 'home' %}">Home</a>
         <h1>Inserir Peso</h1>
         
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button class="button" type="submit">Enviar</button>
-            <button class="button" a href = "{% url 'deletar_dados_peso' %}" >Deletar Dados </a></button>
+            <a href = "{% url 'deletar_dados_peso' %}" >Deletar Dados </a></button>
         </form>
         
     </div>
