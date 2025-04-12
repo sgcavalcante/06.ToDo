@@ -8,106 +8,190 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sensor Data</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
     <style>
-        .graph-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
         .graph-item {
-            flex: 0 0 48%; /* Ajuste a porcentagem conforme necessário */
-            box-sizing: border-box;
+            width: 100%;
+            max-width: 800px;
             margin-bottom: 20px;
         }
-        </style>
- <script>
-    // Recarrega a página a cada 30 segundos (30000 milissegundos)
-    function reloadPage() {
-        setTimeout(function(){
-            window.location.reload();
-        }, 60000); // 60 segundos
-    }
-    
-    // Função para obter e exibir a hora atual
-    function displayTime() {
-        var now = new Date();
-        var hours = now.getHours();
-        var minutes = now.getMinutes();
-        var seconds = now.getSeconds();
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
-        var timeString = hours + ':' + minutes + ':' + seconds;
-        document.getElementById('current-time').innerText = timeString;
-    }
-    
-    // Chama a função displayTime e reloadPage quando a página carrega
-    window.onload = function() {
-        displayTime();
-        reloadPage();  // Aqui você chama a função para recarregar a página
-    }
-    setInterval(displayTime,1000);
+
+        /* Força os gráficos a não estourarem o limite */
+        .graph-item > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto;
+        }
+    </style>
+
+    <script>
+        function reloadPage() {
+            setTimeout(() => window.location.reload(), 60000); // 60s
+        }
+
+        function displayTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR');
+            document.getElementById('current-time').innerText = timeString;
+        }
+
+        window.onload = () => {
+            displayTime();
+            reloadPage();
+        }
+        setInterval(displayTime, 1000);
     </script>
 </head>
 
-    <h1>Sensor Data</h1>
-     
-        <div class="form-control" style="background-color: black;">
-            <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
-             
-        </div>       
- 
-<div class="form-control" style="background-color: rgb(72, 103, 115);">
+<body class="bg-body text-body">
+    <div class="container-xl py-4">
+        <h1 class="mb-4">📡 Sensor Data</h1>
 
-    <p class="btn btn-primary">Hora Atual: <span id="current-time"></span></p>
-    
-    <!-- Formulário de filtros -->
-    <form method="GET">
-        <label for="sensor_id">Sensor ID:</label>
-        <input type="text" id="sensor_id" name="sensor_id">
-        
-        <label for="start_date">Data de Início:</label>
-        <input type="datetime-local" id="start_date" name="start_date">
-        <label for="end_date">Data de Fim:</label>
-        <input type="datetime-local" id="end_date" name="end_date">
-        
-        <button type="submit">Filtrar</button>
-    </form>
-</div>
-    <!--opcao 001
-    <div id="graph"></div>
-    -->
-    <!--opcao 002
-        <div id="graph">{% autoescape off %}{{ graph_div }}{% endautoescape %}</div>
-    -->
-    <!--opcao 003-->
-    <div class="form-control " style="background-color: black;">
-    <div class="graph-container">
-
-        {% for graph in graphs %}
-        
-        <div class="graph-item">
-            <h2>Sensor ID: {{ graph.sensor_id }}</h2>
-            <div id="graph-{{ graph.sensor_id }}">{% autoescape off %}{{ graph.graph_div }}{% endautoescape %}</div>
+        <!-- Botão Home -->
+        <div class="mb-3">
+            <a href="{% url 'home' %}" class="btn btn-primary">🏠 Home</a>
         </div>
-        {% endfor %}
-        
+
+        <!-- Card com Hora e Filtros -->
+        <div class="card bg-dark text-white shadow-lg mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">⏰ Hora Atual:</h5>
+                    <span id="current-time" class="fs-5 fw-bold text-warning"></span>
+                </div>
+                  
+                <div class="card bg-secondary text-white mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">📊 Resumo por Sensor</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-dark table-bordered align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Sensor ID</th>
+                                        <th>Média (°C)</th>
+                                        <th>Mín.</th>
+                                        <th>Máx.</th>
+                                        <th>Total Leituras</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in resumo %}
+                                    <tr>
+                                        <td>{{ item.sensor_id }}</td>
+                                        <td>{{ item.media|floatformat:2 }}</td>
+                                        <td>{{ item.min }}</td>
+                                        <td>{{ item.max }}</td>
+                                        <td>{{ item.total }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="GET" class="px-3 pt-2 pb-4">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label for="sensor_id" class="form-label">Sensor ID:</label>
+                            <input type="text" class="form-control" id="sensor_id" name="sensor_id" placeholder="Ex: 101">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="start_date" class="form-label">Data de Início:</label>
+                            <input type="datetime-local" class="form-control" id="start_date" name="start_date">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="end_date" class="form-label">Data de Fim:</label>
+                            <input type="datetime-local" class="form-control" id="end_date" name="end_date">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-outline-light w-100 mt-md-0 mt-2">
+                                🔍 Filtrar
+                            </button>
+                        </div>
+                    </div>
+                
+                    <!-- Botões extras abaixo, alinhados à esquerda com espaçamento -->
+                    <div class="d-flex justify-content-start mt-4">
+                        <a href="?ultimos=100" class="btn btn-outline-primary btn-sm me-2">
+                            🔁 Últimas 100 Leituras
+                        </a>
+                        <a href="{% url 'exportar_csv' %}" class="btn btn-outline-success btn-sm me-2">
+                            ⬇️ Exportar CSV
+                        </a>
+
+                        <a href="{% url 'deletar_dados' %}" class="btn btn-outline-danger btn-sm">
+                            Deletar Dados
+                        </a>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+
+        <!-- Linha com Tabela e Gráficos -->
+        <div class="row">
+            <!-- Coluna da Tabela -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">📋 Leituras</h4>
+                        <a href="{% url 'deletar_dados' %}" class="btn btn-danger btn-sm mb-3">Deletar Dados</a>
+                        <a href="{% url 'exportar_csv' %}" class="btn btn-outline-success btn-sm mb-3">
+                            ⬇️ Exportar CSV
+                        </a>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-sm align-middle">
+                                <thead class="table-info">
+                                    <tr>
+                                        <th>Sensor ID</th>
+                                        <th>Temp (°C)</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reading in readings %}
+                                    <tr>
+                                        <td class="table-danger">{{ reading.sensor_id }}</td>
+                                        <td>{{ reading.temperatura }}</td>
+                                        <td>{{ reading.timestamp|date:"d/m/Y H:i:s" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna dos Gráficos -->
+            <div class="col-12 col-md-8">
+                <div class="card shadow-sm h-100">
+                    <div class="mb-4 mt-2 ps-2">
+                        <a href="?ultimos=100" class="btn btn-outline-primary btn-sm">
+                            🔁 Mostrar apenas as últimas 100 leituras
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">📊 Gráficos dos Sensores</h4>
+                        <div class="graph-container d-flex flex-column align-items-center">
+                            {% for graph in graphs %}
+                            <div class="card bg-dark text-white shadow mb-4" style="width: 100%; max-width: 800px;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center mb-3">Sensor {{ graph.sensor_id }}</h5>
+                                    <div class="p-2 rounded" style="overflow-x: auto;">
+                                        <div id="graph-{{ graph.sensor_id }}">{% autoescape off %}{{ graph.graph_div }}{% endautoescape %}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-    <div>
-        <a href = "{% url 'deletar_dados' %}" >Deletar Dados </a>
-        <table border="1">
-            <tr>
-                <th>Sensor ID</th>
-                <th>Temperature (°C)</th>
-                <th>Timestamp</th>
-            </tr>
-            {% for reading in readings %}
-            <tr>
-                <td>{{ reading.sensor_id }}</td>
-                <td>{{ reading.temperatura }}</td>
-                <td>{{ reading.timestamp }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>    
-    {% endblock conteudo %}
+</body>
+{% endblock conteudo %}

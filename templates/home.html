@@ -3,7 +3,7 @@
 
 {% load static %}
 {% block conteudo %}
-<h1>.ToDo</h1>
+<h1 class=""> Painel </h1>
 <div class="form-control ">
     <button class="btn btn-primary">Adicionar ToDo</button>
     <button class="btn btn-success">Atualizar ToDo</button>
@@ -12,7 +12,7 @@
  
 
 <div class="form-control" style="background-color: black;">
-    <a href="{% url 'monitortemp' %}" class="btn btn-primary" style="width: 200px ; ">Monitor de Temperatura</a>
+   
     <a href="{% url 'sensordata' %}" class="btn btn-primary" style="width: 200px;">Dashboard Temperatura</a>
     <a href="{% url 'grafico_temperatura' %}" class="btn btn-primary" style="width: 200px;">Acompanhamento Temperatura</a>
     <a href="{% url 'peso_view' %}" class="btn btn-primary" style="width: 200px ; ">Peso</a>
