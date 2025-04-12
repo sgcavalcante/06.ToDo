@@ -1,117 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard de Temperatura{% endblock title %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>.ToDo - Gráficos</title>
+{% block conteudo %}
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<div class="container-xl py-4">
 
-    <style>
-        body {
-            background-color: #141d2b;
-            color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-        }
+  <!-- Card superior com botão de navegação -->
+  <div class="card bg-dark text-white shadow-sm mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <h1 class="mb-0">⚖️ .ToDo - Pesagem</h1>
+      <a href="{% url 'home' %}" class="btn btn-outline-light">🏠 Home</a>
+    </div>
+  </div>
 
-        .container-xl {
-            padding-top: 40px;
-        }
-
-        .card-custom {
-            background-color: #1e2a3a;
-            border-radius: 10px;
-            padding: 20px;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        .card-custom h3 {
-            color: #ffc107;
-        }
-
-        .btn-custom {
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-        }
-
-        .btn-custom:hover {
-            background-color: #0b5ed7;
-        }
-
-        .btn-secondary {
-            margin-left: 10px;
-        }
-
-        a {
-            text-decoration: none;
-        }
-    </style>
-
-    <script>
-        function reloadPage() {
-            setTimeout(function () {
-                window.location.reload();
-            }, 300000); // 5 minutos
-        }
-    </script>
-</head>
-
-<body onload="reloadPage()">
-    <div class="container-xl">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>.ToDo - Pesagem</h1>
-            <a href="{% url 'home' %}" class="btn btn-outline-light">🏠 Home</a>
+  <!-- Card do formulário de inserção de peso -->
+  <div class="card bg-dark text-white shadow-sm mb-5">
+    <div class="card-body">
+      <h4 class="mb-4 text-warning">Inserir Peso</h4>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="id_pessoa_id" class="form-label">Pessoa ID</label>
+            <input type="text" name="pessoa_id" id="id_pessoa_id" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="id_peso" class="form-label">Peso (kg)</label>
+            <input type="number" step="0.01" name="peso" id="id_peso" class="form-control">
+          </div>
         </div>
 
-        <div class="card-custom mb-4">
-            <h4 class="mb-3">Inserir Peso</h4>
-            <form method="post">
-                {% csrf_token %}
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="id_pessoa_id" class="form-label">Pessoa ID</label>
-                        <input type="text" name="pessoa_id" id="id_pessoa_id" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="id_peso" class="form-label">Peso (kg)</label>
-                        <input type="number" step="0.01" name="peso" id="id_peso" class="form-control">
-                    </div>
-                </div>
-            
-                <div class="mt-4 d-flex justify-content-start">
-                    <button type="submit" class="btn btn-custom me-2">💾 Enviar</button>
-                    <a href="{% url 'deletar_dados_peso' %}" class="btn btn-outline-danger">🗑️ Deletar Dados</a>
-                </div>
-            </form>
+        <div class="mt-4 d-flex justify-content-start">
+          <button type="submit" class="btn btn-primary me-2">💾 Enviar</button>
+          <a href="{% url 'deletar_dados_peso' %}" class="btn btn-outline-danger">🗑️ Deletar Dados</a>
         </div>
+      </form>
+    </div>
+  </div>
 
-        <div class="row g-4">
-            <!-- Card Fixo -->
-            <div class="col-12 col-md-4">
-                <div class="card-custom text-center">
-                    <h3>Card Fixo</h3>
-                    {{ graph_html1|safe }}
-                </div>
-            </div>
-
-            <!-- Card Flexível (gráfico principal) -->
-            <div class="col-12 col-md-8">
-                <div class="card-custom">
-                    <h3>Card Flexível</h3>
-                    {{ graph_html|safe }}
-                </div>
-            </div>
+  <!-- Cards dos gráficos -->
+  <div class="row g-4">
+    <!-- Card Fixo -->
+    <div class="col-12 col-md-4">
+      <div class="card bg-dark text-white shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title text-warning mb-3">📈 Card Fixo</h5>
+          {{ graph_html1|safe }}
         </div>
+      </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <!-- Card Flexível -->
+    <div class="col-12 col-md-8">
+      <div class="card bg-dark text-white shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-warning mb-3">📊 Card Flexível</h5>
+          {{ graph_html|safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Atualiza a página a cada 5 minutos
+  setTimeout(() => window.location.reload(), 300000);
+</script>
+
+{% endblock conteudo %}

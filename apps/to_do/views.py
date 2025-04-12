@@ -295,7 +295,18 @@ def deletar_dados_peso(request):
 
 def grafico_temperatura(request):
     sensores = TemperaturaSensores.objects.values_list('sensor_id', flat=True).distinct()
-    return render(request, 'grafico_temperatura1.html', {'sensores': sensores})
+    # Resumo por sensor
+    resumo = (
+        TemperaturaSensores.objects.values('sensor_id')
+        .annotate(
+            media=Avg('temperatura'),
+            max=Max('temperatura'),
+            min=Min('temperatura'),
+            total=Count('id')
+        )
+    )
+
+    return render(request, 'grafico_temperatura1.html', {'sensores': sensores,'resumo': resumo})
 
 
 @api_view(['GET'])
