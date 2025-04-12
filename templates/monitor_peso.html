@@ -1,112 +1,117 @@
-<!-- plot.html -->
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.ToDo - Gráficos</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-        body{
+        body {
+            background-color: #141d2b;
+            color: #f8f9fa;
             font-family: Arial, sans-serif;
-            background-color: rgb(21, 21, 107); 
-            padding-top: 60px;
-            padding-left: 30px;
-        } 
-        button{
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #00796b;
-            color: white;           
-            border:none;
-            border-radius: 5px;
-            cursor: pointer;
-    
-        } 
-        button:hover{
-            background-color: #004d40;
+            min-height: 100vh;
         }
-       .container {
-           display:flex;
-           gap:20px;
-           flex-wrap:wrap
-        } 
-      .card{
-        width: 300px;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border-radius:10px;
-        box-shadow: 0 4 px 8 px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: background-color 0.3s;
-         
-    }
-    .card-fixo1{
-        width: 300px;
-        height: 300px;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border-radius:10px;
-        box-shadow: 0 4 px 8 px rgba(0,0,0,0.1);
-        padding-top: 25px;
-    }
-        
-    .card-flexivel{
-        width: 100%;
-        height: 100%;
-        max-width:1000px;
-        max-height:600px;
-        
-        padding:20px;
-        background-color: #4c8cae;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        
-        align-content: center;
-    }
-    .hidden{
-        display: none;    
-    }  
-    .card.amarelo {
-        background-color: #fff9c4; /* cor alternativa */
-    }
+
+        .container-xl {
+            padding-top: 40px;
+        }
+
+        .card-custom {
+            background-color: #1e2a3a;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .card-custom h3 {
+            color: #ffc107;
+        }
+
+        .btn-custom {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #0b5ed7;
+        }
+
+        .btn-secondary {
+            margin-left: 10px;
+        }
+
+        a {
+            text-decoration: none;
+        }
     </style>
+
     <script>
-        // Recarrega a página a cada 30 segundos (30000 milissegundos)
         function reloadPage() {
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-            }, 300000000);
+            }, 300000); // 5 minutos
         }
-        </script>
-    <title>Plotly Chart</title>
+    </script>
 </head>
-<body>
-    <h1>.ToDo</h1>
-     
-    <div>
-        
-        <a href="{% url 'home' %}">Home</a>
-        <h1>Inserir Peso</h1>
-        
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="button" type="submit">Enviar</button>
-            <a href = "{% url 'deletar_dados_peso' %}" >Deletar Dados </a></button>
-        </form>
-        
-    </div>
-    <hr>
-    <div class="container" >
-        
-         <!-- Card 2-->
-         <div class = "card" id="card2">
-            <h3>Card Fixo</h3>
-            {{ graph_html1|safe }}
+
+<body onload="reloadPage()">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>.ToDo - Pesagem</h1>
+            <a href="{% url 'home' %}" class="btn btn-outline-light">🏠 Home</a>
         </div>
-         
-        <!-- Card 3-->
-        <div class = "card-flexivel" id="card3">
-            <h3>Card Flexível</h3>
-            {{ graph_html|safe }}
-        </div> 
+
+        <div class="card-custom mb-4">
+            <h4 class="mb-3">Inserir Peso</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="id_pessoa_id" class="form-label">Pessoa ID</label>
+                        <input type="text" name="pessoa_id" id="id_pessoa_id" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_peso" class="form-label">Peso (kg)</label>
+                        <input type="number" step="0.01" name="peso" id="id_peso" class="form-control">
+                    </div>
+                </div>
+            
+                <div class="mt-4 d-flex justify-content-start">
+                    <button type="submit" class="btn btn-custom me-2">💾 Enviar</button>
+                    <a href="{% url 'deletar_dados_peso' %}" class="btn btn-outline-danger">🗑️ Deletar Dados</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="row g-4">
+            <!-- Card Fixo -->
+            <div class="col-12 col-md-4">
+                <div class="card-custom text-center">
+                    <h3>Card Fixo</h3>
+                    {{ graph_html1|safe }}
+                </div>
+            </div>
+
+            <!-- Card Flexível (gráfico principal) -->
+            <div class="col-12 col-md-8">
+                <div class="card-custom">
+                    <h3>Card Flexível</h3>
+                    {{ graph_html|safe }}
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

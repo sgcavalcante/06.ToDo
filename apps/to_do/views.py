@@ -208,12 +208,33 @@ def peso_view(request):
 
     # Atualizar o layout
     fig.update_layout(
-        title_text="Gráficos",
-        width=900,  # defina a largura desejada
-        height=500,
+        #title_text="Gráficos",
+        #width=900,  # defina a largura desejada
+        #height=500,
+        autosize=True,
+        margin=dict(l=0, r=0, b=0, t=30),
+        height=450,
         xaxis_title="Timestamp",
         yaxis_title="Peso (kg)"
     )
+
+    #############
+    '''
+    fig = px.line(
+                x=data['timestamps'],
+                y=data['temperaturas'],
+                title=f'Temperaturas do Sensor {sensor}',
+                labels={'x': 'Timestamp', 'y': 'Temperatura (°C)'},
+                template='plotly_dark'
+            )
+            fig.update_traces(mode='markers+lines')
+            fig.update_layout(
+                autosize=True,
+                margin=dict(l=0, r=0, b=0, t=30),
+                height=300
+            )
+    '''
+    #############
 
     # Converter a figura para HTML
     graph_html = pio.to_html(fig, full_html=False)
