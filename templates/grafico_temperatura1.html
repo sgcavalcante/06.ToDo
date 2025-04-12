@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Dashboard de Temperatura{% endblock title %}
+{% load static %}
+{% block conteudo %}
+
+<div class="container-xl py-4">
+  <h1 class="mb-4">🌡️ Dashboard de Temperatura</h1>
+
+  <!-- Botões de controle -->
+  <div class="mb-4">
+    <button onclick="fetchAndRenderTemperatureData(100)" class="btn btn-outline-primary btn-sm me-2">
+      🔁 Ver Últimos 100 Registros
+    </button>
+    <button onclick="fetchAndRenderTemperatureData()" class="btn btn-outline-secondary btn-sm">
+      📋 Ver Todos
+    </button>
+  </div>
+
+  <!-- 🔵 GRÁFICO GERAL (sempre visível) -->
+  <div class="card bg-dark text-white shadow mb-5">
+    <div class="card-body">
+      <h4 class="card-title text-center">📊 Todos os Sensores (Gráfico Geral)</h4>
+      <div id="graph-all"></div>
+    </div>
+  </div>
+
+  <!-- 🔸 GRÁFICOS INDIVIDUAIS EM ABAS -->
+  <div class="mb-5">
+    <ul class="nav nav-tabs d-none d-md-flex mb-3" id="sensorTabs" role="tablist">
+      {% for sensor in sensores %}
+        <li class="nav-item" role="presentation">
+          <button class="nav-link {% if forloop.first %}active{% endif %}" id="tab-{{ sensor }}" data-bs-toggle="tab" data-bs-target="#sensor-{{ sensor }}" type="button" role="tab">
+            Sensor {{ sensor }}
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content d-none d-md-block" id="sensorTabsContent">
+      {% for sensor in sensores %}
+        <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="sensor-{{ sensor }}" role="tabpanel">
+          <div class="card bg-dark text-white shadow mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Sensor {{ sensor }}</h5>
+              <div id="graph-{{ sensor }}"></div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Accordion para mobile -->
+    <div class="accordion d-md-none" id="sensorAccordion">
+      {% for sensor in sensores %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{ sensor }}">
+            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ sensor }}">
+              Sensor {{ sensor }}
+            </button>
+          </h2>
+          <div id="collapse{{ sensor }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}">
+            <div class="accordion-body">
+              <div id="graph-{{ sensor }}"></div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+function fetchAndRenderTemperatureData(limit = null) {
+  let url = '/api/get_temperatura_data/';
+  if (limit) {
+    url += '?limit=' + limit;
+  }
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const allTraces = [];
+
+      for (let sensor_id in data) {
+        const trace = {
+          x: data[sensor_id].timestamps,
+          y: data[sensor_id].temperatures,
+          mode: 'lines+markers',
+          name: 'Sensor ' + sensor_id
+        };
+
+        allTraces.push(trace);
+
+        // Gráfico individual
+        const layoutIndividual = {
+          title: `Sensor ${sensor_id}`,
+          template: 'plotly_dark',
+          paper_bgcolor: '#1e1e1e',
+          plot_bgcolor: '#1e1e1e',
+          font: { color: '#ffffff' },
+          height: 400
+        };
+
+        Plotly.newPlot('graph-' + sensor_id, [trace], layoutIndividual);
+      }
+
+      // Gráfico geral
+      const layoutGeral = {
+        title: 'Todos os Sensores',
+        template: 'plotly_dark',
+        paper_bgcolor: '#1e1e1e',
+        plot_bgcolor: '#1e1e1e',
+        font: { color: '#ffffff' },
+        height: 500
+      };
+
+      Plotly.newPlot('graph-all', allTraces, layoutGeral);
+    });
+}
+
+window.onload = function () {
+  fetchAndRenderTemperatureData(100);
+};
+</script>
+
+{% endblock conteudo %}
