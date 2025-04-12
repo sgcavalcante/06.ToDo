@@ -1,90 +1,117 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock title %}
+{% block title %}Monitoramento de Temperatura{% endblock title %}
 
 {% load static %}
 {% block conteudo %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensor Data</title>
-    <style>
-        .graph-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-        .graph-item {
-            flex: 0 0 48%; /* Ajuste a porcentagem conforme necessário */
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
-        </style>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script>
-    function displayTime() {
-        var now = new Date();
-        var hours = now.getHours();
-        var minutes = now.getMinutes();
-        var seconds = now.getSeconds();
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
-        var timeString = hours + ':' + minutes + ':' + seconds;
-        document.getElementById('current-time').innerText = timeString;
-    }
-      function fetchAndRenderTemperatureData() {
-          // Usar AJAX para buscar os dados da API
-          fetch('/api/get_temperatura_data/')
-              .then(response => response.json())
-              .then(data => {
-                  var traces = [];
-                  // Para cada sensor, crie uma nova trace no gráfico
-                  for (var sensor_id in data) {
-                      traces.push({
-                          x: data[sensor_id].timestamps,
-                          y: data[sensor_id].temperatures,
-                          mode: 'lines+markers',
-                          name: 'Sensor ' + sensor_id
-                      });
-                  }
-  
-                  var layout = {
-                      title: 'Gráficos de Temperatura',
-                      xaxis: { title: 'Data/Hora' },
-                      yaxis: { title: 'Temperatura (°C)' },
-                      height: 600,
-                      width: 800
-                  };
-  
-                  // Renderizar o gráfico com Plotly
-                  Plotly.newPlot('temperatura-graph', traces, layout);
-                  // Configuração do layout do gráfico
-              });
-      }
-  
-      // Carregar os dados e renderizar o gráfico quando a página carregar
-      window.onload = function(){
-        fetchAndRenderTemperatureData();
-        displayTime();
-      }
-      // Atualizar os dados a cada 30 segundos
-      setInterval(fetchAndRenderTemperatureData, 300000);
-      setInterval(displayTime,1000);
-      ///Mostra a hora
-  </script>
- </head> 
- <h1>Sensor Data</h1>
-     
-        <div class="form-control" style="background-color: black;">
-            <div>
-                <p class="btn btn-primary">Hora Atual: <span id="current-time"></span></p>
-                
+
+<div class="container-xl py-4">
+
+    <h1 class="mb-4">🌡️ Monitoramento de Temperatura</h1>
+
+    <!-- Card de Hora Atual e Navegação -->
+    <div class="card bg-dark text-white shadow-sm mb-4">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+            <!-- Hora Atual -->
+            <div class="d-flex align-items-center">
+                <span class="fw-bold me-2">🕒 Hora Atual:</span>
+                <span id="current-time" class="text-warning fs-5"></span>
             </div>
 
+            <!-- Botão de volta -->
             <div>
-                <a href="{% url 'home' %}" class="btn btn-primary" style="width: 200px ; ">Home</a>
+                <a href="{% url 'home' %}" class="btn btn-outline-light">
+                    🏠 Home
+                </a>
             </div>
-             
-        </div>      
-  <div id="temperatura-graph"></div>
-  
-    {% endblock conteudo %}
+
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <button onclick="fetchAndRenderTemperatureData(100)" class="btn btn-outline-primary btn-sm">
+            🔁 Ver Últimos 100 Registros
+        </button>
+        <button onclick="fetchAndRenderTemperatureData()" class="btn btn-outline-secondary btn-sm ms-2">
+            📋 Ver Todos
+        </button>
+    </div>
+    <!-- Área do Gráfico -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">📊 Gráfico de Temperatura (em tempo real)</h4>
+            <div id="temperatura-graph" class="d-flex justify-content-center"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    function displayTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        document.getElementById('current-time').innerText = timeString;
+    }
+
+    function fetchAndRenderTemperatureData(limit = null) {
+    let url = '/api/get_temperatura_data/';
+    if (limit) {
+        url += '?limit=' + limit;
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const traces = [];
+
+            for (let sensor_id in data) {
+                traces.push({
+                    x: data[sensor_id].timestamps,
+                    y: data[sensor_id].temperatures,
+                    mode: 'lines+markers',
+                    name: 'Sensor ' + sensor_id
+                });
+            }
+
+            const layout = {
+                title: {
+                    text: 'Gráficos de Temperatura',
+                    font: { color: '#ffffff' }
+                },
+                xaxis: {
+                    title: { text: 'Data/Hora', font: { color: '#ffffff' } },
+                    tickfont: { color: '#ffffff' },
+                    gridcolor: '#444'
+                },
+                yaxis: {
+                    title: { text: 'Temperatura (°C)', font: { color: '#ffffff' } },
+                    tickfont: { color: '#ffffff' },
+                    gridcolor: '#444'
+                },
+                paper_bgcolor: '#1e1e1e',
+                plot_bgcolor: '#1e1e1e',
+                font: { color: '#ffffff' },
+                height: 500,
+                width: 1000
+            };
+
+            Plotly.newPlot('temperatura-graph', traces, layout);
+        });
+}
+
+    window.onload = function () {
+        fetchAndRenderTemperatureData();
+        displayTime();
+    };
+
+    setInterval(fetchAndRenderTemperatureData, 30000); // Atualiza a cada 30s
+    setInterval(displayTime, 1000);
+</script>
+
+{% endblock conteudo %}

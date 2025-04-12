@@ -1,5 +1,10 @@
 
 import io
+import plotly.graph_objects as go
+import plotly.express as px
+import plotly.io as pio
+import plotly.express as px
+import csv
 from django.http import HttpResponse,JsonResponse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
@@ -8,14 +13,8 @@ from .models import TemperaturaSensores,Peso
 from .forms import PesoForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import plotly.express as px
 from plotly.subplots import make_subplots
 #import plotly.graph_objs as go
-import plotly.graph_objects as go
-import plotly.express as px
-import plotly.io as pio
-import csv
-from .models import TemperaturaSensores
 from django.db.models import Avg, Max, Min, Count
 
 # Create your views here.
@@ -24,10 +23,6 @@ def home(request):
 
 def index(request):
     return render(request,'index.html')
-
-
-
-
 
 @api_view(['POST'])
 def receive_data(request):
@@ -47,10 +42,6 @@ def receive_data(request):
 #    readings=TemperaturaSensores.objects.all().order_by('-timestamp')
 #    return render(request,'sensor_data.html',{'readings':readings})
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
 
 
 def sensordata(request):
@@ -117,9 +108,6 @@ def sensordata(request):
         'readings': readings,
         'resumo': resumo
     })
-
-# views.py
-
 
 
 def plot_view(request):
@@ -262,7 +250,7 @@ def peso_view(request):
 
     return render(request, 'monitor_peso.html', {'form':form,'graph_html': graph_html,'graph_html1': graph_html1})
     #return render(request,'teste_main.html')
-####
+
 def plot_gauge(request):
     pessoa_data = Peso.objects.order_by('id').last()#(field_name='peso')
     #for data in pessoa_data:
@@ -284,7 +272,7 @@ def plot_gauge(request):
     graph_html1 = pio.to_html(fig, full_html=False)
     return render(request, 'plot_gauge.html', {'graph_html1': graph_html1})
 
-####
+
 
 def deletar_dados(request):
     dados = TemperaturaSensores.objects.all()
@@ -297,10 +285,8 @@ def deletar_dados_peso(request):
     return redirect('peso_view')
 
 
-################################
-from django.http import JsonResponse
-from .models import TemperaturaSensores
-from django.utils import timezone
+
+
 
 
 def grafico_temperatura(request):
@@ -309,17 +295,29 @@ def grafico_temperatura(request):
 
 @api_view(['GET'])
 def get_temperatura_data(request):
-    sensor_data = TemperaturaSensores.objects.all()
+    limit = request.GET.get('limit')
     
+    # Ordena por timestamp descendente (mais recente primeiro)
+    sensor_data = TemperaturaSensores.objects.all().order_by('-timestamp')
+    
+    # Aplica o limite, se informado
+    if limit:
+        try:
+            limit = int(limit)
+            sensor_data = sensor_data[:limit]
+        except ValueError:
+            pass  # Se o valor não for numérico, ignora o filtro
+
+    # Agrupa por sensor_id
     sensors_groups = {}
     local_tz = timezone.get_current_timezone()
-    for data in sensor_data:
+    for data in reversed(sensor_data):  # reversed para voltar à ordem cronológica
         local_timestamp = data.timestamp.astimezone(local_tz)
         if data.sensor_id not in sensors_groups:
             sensors_groups[data.sensor_id] = {'timestamps': [], 'temperatures': []}
-        sensors_groups[data.sensor_id]['timestamps'].append(local_timestamp)
+        sensors_groups[data.sensor_id]['timestamps'].append(local_timestamp.strftime('%Y-%m-%d %H:%M:%S'))
         sensors_groups[data.sensor_id]['temperatures'].append(data.temperatura)
-    
+
     return JsonResponse(sensors_groups)
 
 
