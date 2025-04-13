@@ -51,6 +51,7 @@ def sensordata(request):
     ultimos = request.GET.get('ultimos')
 
     readings = TemperaturaSensores.objects.all().order_by('-timestamp')
+
     if start_date:
         readings = readings.filter(timestamp__gte=parse_datetime(start_date))
     if end_date:
@@ -74,6 +75,7 @@ def sensordata(request):
         sensors_data[reading.sensor_id]['timestamps'].append(local_timestamp)
         sensors_data[reading.sensor_id]['temperaturas'].append(reading.temperatura)
 
+    # Criar os gráficos por sensor
     graphs = []
     for sensor, data in sensors_data.items():
         fig = px.line(
@@ -92,8 +94,8 @@ def sensordata(request):
         graph_div = fig.to_html(full_html=False)
         graphs.append({'sensor_id': sensor, 'graph_div': graph_div})
 
-    # Resumo por sensor
-    resumo = (
+    # Resumo base com média, min, max, total
+    resumo_base = (
         TemperaturaSensores.objects.values('sensor_id')
         .annotate(
             media=Avg('temperatura'),
@@ -102,6 +104,20 @@ def sensordata(request):
             total=Count('id')
         )
     )
+
+    # Última leitura por sensor
+    ultimos_valores = (
+        TemperaturaSensores.objects.order_by('sensor_id', '-timestamp')
+        .distinct('sensor_id')
+    )
+    ultimos_dict = {u.sensor_id: u.temperatura for u in ultimos_valores}
+
+    # Junta resumo + último valor
+    resumo = []
+    for r in resumo_base:
+        sensor = r['sensor_id']
+        r['ultimo_valor'] = ultimos_dict.get(sensor)
+        resumo.append(r)
 
     return render(request, 'sensor_data.html', context={
         'graphs': graphs,
@@ -295,8 +311,8 @@ def deletar_dados_peso(request):
 
 def grafico_temperatura(request):
     sensores = TemperaturaSensores.objects.values_list('sensor_id', flat=True).distinct()
-    # Resumo por sensor
-    resumo = (
+    # Resumo base com média, min, max, total
+    resumo_base = (
         TemperaturaSensores.objects.values('sensor_id')
         .annotate(
             media=Avg('temperatura'),
@@ -306,6 +322,22 @@ def grafico_temperatura(request):
         )
     )
 
+    # Última leitura por sensor
+    ultimos_valores = (
+        TemperaturaSensores.objects.order_by('sensor_id', '-timestamp')
+        .distinct('sensor_id')
+    )
+    ultimos_dict = {u.sensor_id: u.temperatura for u in ultimos_valores}
+
+    # Junta resumo + último valor
+    resumo = []
+    for r in resumo_base:
+        sensor = r['sensor_id']
+        r['ultimo_valor'] = ultimos_dict.get(sensor)
+        resumo.append(r)
+
+    
+    
     return render(request, 'grafico_temperatura1.html', {'sensores': sensores,'resumo': resumo})
 
 
